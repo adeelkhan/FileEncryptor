@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"crypto/aes"
 	"fmt"
 	"os"
@@ -24,6 +25,7 @@ func DecryptFile(inputfile, outfile *os.File) {
 		c.Decrypt(msgByte, chunk[:n])
 		decodedChunk = append(decodedChunk, msgByte...)
 	}
+	decodedChunk = bytes.TrimRight(decodedChunk, "\x00")
 	outfile.WriteString(string(decodedChunk))
 	outfile.Sync()
 
